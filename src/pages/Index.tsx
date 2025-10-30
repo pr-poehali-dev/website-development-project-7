@@ -1,21 +1,23 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
 
-interface Pizza {
+interface MenuItem {
   id: number;
   name: string;
   description: string;
   price: number;
   image: string;
   category: string;
+  type: 'pizza' | 'roll';
 }
 
-interface CartItem extends Pizza {
+interface CartItem extends MenuItem {
   quantity: number;
 }
 
@@ -24,14 +26,15 @@ interface OrderStatus {
   status: string;
 }
 
-const pizzas: Pizza[] = [
+const menuItems: MenuItem[] = [
   {
     id: 1,
     name: 'Маргарита',
     description: 'Моцарелла, базилик, томаты',
     price: 590,
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/8de29875-79a1-4cc1-b297-a2e25fcb43a4.jpg',
-    category: 'Классические'
+    category: 'Классические',
+    type: 'pizza'
   },
   {
     id: 2,
@@ -39,7 +42,8 @@ const pizzas: Pizza[] = [
     description: 'Салями, моцарелла, томатный соус',
     price: 690,
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/dac16167-018b-4005-bfaf-d47a40765dfc.jpg',
-    category: 'Мясные'
+    category: 'Мясные',
+    type: 'pizza'
   },
   {
     id: 3,
@@ -47,7 +51,8 @@ const pizzas: Pizza[] = [
     description: 'Перец, шампиньоны, оливки, томаты',
     price: 650,
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/bad152ec-698e-42d5-9397-d8a6dc74dfe3.jpg',
-    category: 'Вегетарианские'
+    category: 'Вегетарианские',
+    type: 'pizza'
   },
   {
     id: 4,
@@ -55,7 +60,8 @@ const pizzas: Pizza[] = [
     description: 'Моцарелла, пармезан, горгонзола, дор блю',
     price: 790,
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/8de29875-79a1-4cc1-b297-a2e25fcb43a4.jpg',
-    category: 'Классические'
+    category: 'Классические',
+    type: 'pizza'
   },
   {
     id: 5,
@@ -63,7 +69,8 @@ const pizzas: Pizza[] = [
     description: 'Бекон, ветчина, курица, говядина',
     price: 850,
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/dac16167-018b-4005-bfaf-d47a40765dfc.jpg',
-    category: 'Мясные'
+    category: 'Мясные',
+    type: 'pizza'
   },
   {
     id: 6,
@@ -71,7 +78,44 @@ const pizzas: Pizza[] = [
     description: 'Курица, ананас, моцарелла',
     price: 720,
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/8de29875-79a1-4cc1-b297-a2e25fcb43a4.jpg',
-    category: 'Экзотические'
+    category: 'Экзотические',
+    type: 'pizza'
+  },
+  {
+    id: 7,
+    name: 'Филадельфия',
+    description: 'Лосось, сливочный сыр, огурец',
+    price: 450,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/d0658495-fc0c-4111-8f1e-fa65472194d4.jpg',
+    category: 'Классические',
+    type: 'roll'
+  },
+  {
+    id: 8,
+    name: 'Калифорния',
+    description: 'Краб, авокадо, огурец, икра тобико',
+    price: 420,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/164da862-4895-49dc-b6be-fe2d36a8abd5.jpg',
+    category: 'Классические',
+    type: 'roll'
+  },
+  {
+    id: 9,
+    name: 'Унаги',
+    description: 'Угорь, огурец, соус унаги, кунжут',
+    price: 480,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/164da862-4895-49dc-b6be-fe2d36a8abd5.jpg',
+    category: 'Классические',
+    type: 'roll'
+  },
+  {
+    id: 10,
+    name: 'Дракон',
+    description: 'Креветка темпура, авокадо, угорь сверху',
+    price: 520,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/d0658495-fc0c-4111-8f1e-fa65472194d4.jpg',
+    category: 'Классические',
+    type: 'roll'
   }
 ];
 
@@ -86,15 +130,18 @@ const Index = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [orderStatus, setOrderStatus] = useState<OrderStatus | null>(null);
 
-  const addToCart = (pizza: Pizza) => {
+  const pizzas = useMemo(() => menuItems.filter(item => item.type === 'pizza'), []);
+  const rolls = useMemo(() => menuItems.filter(item => item.type === 'roll'), []);
+
+  const addToCart = (item: MenuItem) => {
     setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.id === pizza.id);
+      const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
       if (existingItem) {
-        return prevCart.map(item =>
-          item.id === pizza.id ? { ...item, quantity: item.quantity + 1 } : item
+        return prevCart.map(cartItem =>
+          cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
         );
       }
-      return [...prevCart, { ...pizza, quantity: 1 }];
+      return [...prevCart, { ...item, quantity: 1 }];
     });
   };
 
@@ -252,56 +299,115 @@ const Index = () => {
 
         <div className="mb-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Меню</h2>
-          <p className="text-xl text-muted-foreground">Выберите свою идеальную пиццу</p>
+          <p className="text-xl text-muted-foreground">Выберите свое блюдо</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {pizzas.map((pizza, index) => (
-            <Card
-              key={pizza.id}
-              className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <CardHeader className="p-0">
-                <div className="relative overflow-hidden h-64">
-                  <img
-                    src={pizza.image}
-                    alt={pizza.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <Badge className="absolute top-4 left-4 bg-secondary">
-                    {pizza.category}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="p-6">
-                <CardTitle className="text-2xl mb-2">{pizza.name}</CardTitle>
-                <CardDescription className="text-base mb-4">
-                  {pizza.description}
-                </CardDescription>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-primary">{pizza.price} ₽</span>
-                </div>
-              </CardContent>
-              <CardFooter className="p-6 pt-0">
-                <Button
-                  size="lg"
-                  className="w-full group-hover:scale-105 transition-transform"
-                  onClick={() => addToCart(pizza)}
+        <Tabs defaultValue="pizza" className="w-full">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+            <TabsTrigger value="pizza" className="text-lg">
+              <span className="mr-2">🍕</span>
+              Пицца
+            </TabsTrigger>
+            <TabsTrigger value="rolls" className="text-lg">
+              <span className="mr-2">🍣</span>
+              Роллы
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="pizza" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {pizzas.map((item, index) => (
+                <Card
+                  key={item.id}
+                  className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <Icon name="Plus" size={20} className="mr-2" />
-                  В корзину
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+                  <CardHeader className="p-0">
+                    <div className="relative overflow-hidden h-64">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <Badge className="absolute top-4 left-4 bg-secondary">
+                        {item.category}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <CardTitle className="text-2xl mb-2">{item.name}</CardTitle>
+                    <CardDescription className="text-base mb-4">
+                      {item.description}
+                    </CardDescription>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-primary">{item.price} ₽</span>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-6 pt-0">
+                    <Button
+                      size="lg"
+                      className="w-full group-hover:scale-105 transition-transform"
+                      onClick={() => addToCart(item)}
+                    >
+                      <Icon name="Plus" size={20} className="mr-2" />
+                      В корзину
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="rolls" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {rolls.map((item, index) => (
+                <Card
+                  key={item.id}
+                  className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <CardHeader className="p-0">
+                    <div className="relative overflow-hidden h-64">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <Badge className="absolute top-4 left-4 bg-secondary">
+                        {item.category}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <CardTitle className="text-2xl mb-2">{item.name}</CardTitle>
+                    <CardDescription className="text-base mb-4">
+                      {item.description}
+                    </CardDescription>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-primary">{item.price} ₽</span>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-6 pt-0">
+                    <Button
+                      size="lg"
+                      className="w-full group-hover:scale-105 transition-transform"
+                      onClick={() => addToCart(item)}
+                    >
+                      <Icon name="Plus" size={20} className="mr-2" />
+                      В корзину
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </main>
 
       <footer className="bg-foreground text-background py-8 mt-16">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-lg font-semibold mb-2">🍕 PizzaExpress</p>
-          <p className="text-sm opacity-80">Доставка горячей пиццы за 30 минут</p>
+          <p className="text-lg font-semibold mb-2">🍕 PizzaExpress 🍣</p>
+          <p className="text-sm opacity-80">Доставка пиццы и роллов за 30 минут</p>
         </div>
       </footer>
     </div>
