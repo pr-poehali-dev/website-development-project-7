@@ -14,7 +14,7 @@ interface MenuItem {
   price: number;
   image: string;
   category: string;
-  type: 'pizza' | 'roll';
+  type: 'pizza' | 'roll' | 'baked-roll';
 }
 
 interface CartItem extends MenuItem {
@@ -116,6 +116,42 @@ const menuItems: MenuItem[] = [
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/d0658495-fc0c-4111-8f1e-fa65472194d4.jpg',
     category: 'Классические',
     type: 'roll'
+  },
+  {
+    id: 11,
+    name: 'Запеченный лосось',
+    description: 'Лосось, сливочный сыр, запеченный с соусом',
+    price: 550,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/5f96d78a-58a5-4663-82d9-f68e29bf9423.jpg',
+    category: 'Запеченные',
+    type: 'baked-roll'
+  },
+  {
+    id: 12,
+    name: 'Запеченный краб',
+    description: 'Краб, авокадо, сыр, запеченный с острым соусом',
+    price: 530,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/5f96d78a-58a5-4663-82d9-f68e29bf9423.jpg',
+    category: 'Запеченные',
+    type: 'baked-roll'
+  },
+  {
+    id: 13,
+    name: 'Запеченный угорь',
+    description: 'Угорь, огурец, сыр моцарелла, соус унаги',
+    price: 580,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/5f96d78a-58a5-4663-82d9-f68e29bf9423.jpg',
+    category: 'Запеченные',
+    type: 'baked-roll'
+  },
+  {
+    id: 14,
+    name: 'Запеченный микс',
+    description: 'Лосось, угорь, креветка, сыр, спайси соус',
+    price: 620,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/5f96d78a-58a5-4663-82d9-f68e29bf9423.jpg',
+    category: 'Запеченные',
+    type: 'baked-roll'
   }
 ];
 
@@ -132,6 +168,7 @@ const Index = () => {
 
   const pizzas = useMemo(() => menuItems.filter(item => item.type === 'pizza'), []);
   const rolls = useMemo(() => menuItems.filter(item => item.type === 'roll'), []);
+  const bakedRolls = useMemo(() => menuItems.filter(item => item.type === 'baked-roll'), []);
 
   const addToCart = (item: MenuItem) => {
     setCart(prevCart => {
@@ -303,7 +340,7 @@ const Index = () => {
         </div>
 
         <Tabs defaultValue="pizza" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 mb-8">
             <TabsTrigger value="pizza" className="text-lg">
               <span className="mr-2">🍕</span>
               Пицца
@@ -311,6 +348,10 @@ const Index = () => {
             <TabsTrigger value="rolls" className="text-lg">
               <span className="mr-2">🍣</span>
               Роллы
+            </TabsTrigger>
+            <TabsTrigger value="baked-rolls" className="text-lg">
+              <span className="mr-2">🔥</span>
+              Запечённые
             </TabsTrigger>
           </TabsList>
 
@@ -361,6 +402,50 @@ const Index = () => {
           <TabsContent value="rolls" className="mt-0">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {rolls.map((item, index) => (
+                <Card
+                  key={item.id}
+                  className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <CardHeader className="p-0">
+                    <div className="relative overflow-hidden h-64">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <Badge className="absolute top-4 left-4 bg-secondary">
+                        {item.category}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <CardTitle className="text-2xl mb-2">{item.name}</CardTitle>
+                    <CardDescription className="text-base mb-4">
+                      {item.description}
+                    </CardDescription>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-primary">{item.price} ₽</span>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-6 pt-0">
+                    <Button
+                      size="lg"
+                      className="w-full group-hover:scale-105 transition-transform"
+                      onClick={() => addToCart(item)}
+                    >
+                      <Icon name="Plus" size={20} className="mr-2" />
+                      В корзину
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="baked-rolls" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {bakedRolls.map((item, index) => (
                 <Card
                   key={item.id}
                   className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden"
