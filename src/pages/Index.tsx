@@ -487,6 +487,71 @@ const Index = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        <section className="mt-24 mb-16">
+          <Card className="overflow-hidden">
+            <div className="grid md:grid-cols-2 gap-0">
+              <div className="bg-gradient-to-br from-primary to-secondary p-12 text-primary-foreground flex items-center">
+                <div>
+                  <h2 className="text-4xl font-bold mb-6">О нас</h2>
+                  <p className="text-lg mb-4 opacity-90">
+                    PizzaExpress — это современный сервис доставки вкуснейшей пиццы и роллов, 
+                    который работает для вас с 2024 года.
+                  </p>
+                  <p className="text-lg opacity-90">
+                    Мы используем только свежие ингредиенты премиум-качества и гарантируем 
+                    доставку горячих блюд за 30 минут или возвращаем деньги!
+                  </p>
+                </div>
+              </div>
+              
+              <div className="p-12 bg-muted">
+                <h3 className="text-2xl font-bold mb-6">Почему выбирают нас?</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary text-primary-foreground p-3 rounded-lg">
+                      <Icon name="Clock" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-lg mb-1">Быстрая доставка</h4>
+                      <p className="text-muted-foreground">Горячие блюда за 30 минут или бесплатно</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary text-primary-foreground p-3 rounded-lg">
+                      <Icon name="Star" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-lg mb-1">Премиум качество</h4>
+                      <p className="text-muted-foreground">Только свежие ингредиенты от проверенных поставщиков</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary text-primary-foreground p-3 rounded-lg">
+                      <Icon name="ChefHat" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-lg mb-1">Профессиональные повара</h4>
+                      <p className="text-muted-foreground">Команда опытных специалистов с 10+ летним стажем</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary text-primary-foreground p-3 rounded-lg">
+                      <Icon name="Percent" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-lg mb-1">Выгодные акции</h4>
+                      <p className="text-muted-foreground">Регулярные скидки и специальные предложения</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </section>
       </main>
 
       <footer className="bg-foreground text-background py-8 mt-16">
