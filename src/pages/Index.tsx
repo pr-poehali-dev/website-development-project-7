@@ -14,7 +14,7 @@ interface MenuItem {
   price: number;
   image: string;
   category: string;
-  type: 'pizza' | 'roll' | 'baked-roll';
+  type: 'pizza' | 'roll' | 'baked-roll' | 'fried-roll';
 }
 
 interface CartItem extends MenuItem {
@@ -152,6 +152,42 @@ const menuItems: MenuItem[] = [
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/5f96d78a-58a5-4663-82d9-f68e29bf9423.jpg',
     category: 'Запеченные',
     type: 'baked-roll'
+  },
+  {
+    id: 15,
+    name: 'Темпура с креветкой',
+    description: 'Креветка в кляре, огурец, спайси соус',
+    price: 490,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/164da862-4895-49dc-b6be-fe2d36a8abd5.jpg',
+    category: 'Жареные',
+    type: 'fried-roll'
+  },
+  {
+    id: 16,
+    name: 'Темпура с лососем',
+    description: 'Лосось темпура, авокадо, сливочный сыр',
+    price: 510,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/d0658495-fc0c-4111-8f1e-fa65472194d4.jpg',
+    category: 'Жареные',
+    type: 'fried-roll'
+  },
+  {
+    id: 17,
+    name: 'Темпура острая',
+    description: 'Курица темпура, острый перец, спайси майо',
+    price: 470,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/164da862-4895-49dc-b6be-fe2d36a8abd5.jpg',
+    category: 'Жареные',
+    type: 'fried-roll'
+  },
+  {
+    id: 18,
+    name: 'Темпура овощная',
+    description: 'Овощи в кляре, сливочный сыр, кунжут',
+    price: 420,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/164da862-4895-49dc-b6be-fe2d36a8abd5.jpg',
+    category: 'Жареные',
+    type: 'fried-roll'
   }
 ];
 
@@ -170,6 +206,7 @@ const Index = () => {
   const pizzas = useMemo(() => menuItems.filter(item => item.type === 'pizza'), []);
   const rolls = useMemo(() => menuItems.filter(item => item.type === 'roll'), []);
   const bakedRolls = useMemo(() => menuItems.filter(item => item.type === 'baked-roll'), []);
+  const friedRolls = useMemo(() => menuItems.filter(item => item.type === 'fried-roll'), []);
 
   const addToCart = (item: MenuItem) => {
     setCart(prevCart => {
@@ -380,7 +417,7 @@ const Index = () => {
             </div>
 
             <Tabs defaultValue="pizza" className="w-full">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 mb-8">
+          <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-8">
             <TabsTrigger value="pizza" className="text-lg">
               <span className="mr-2">🍕</span>
               Пицца
@@ -392,6 +429,10 @@ const Index = () => {
             <TabsTrigger value="baked-rolls" className="text-lg">
               <span className="mr-2">🔥</span>
               Запечённые
+            </TabsTrigger>
+            <TabsTrigger value="fried-rolls" className="text-lg">
+              <span className="mr-2">🍤</span>
+              Жареные
             </TabsTrigger>
           </TabsList>
 
@@ -486,6 +527,50 @@ const Index = () => {
           <TabsContent value="baked-rolls" className="mt-0">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {bakedRolls.map((item, index) => (
+                <Card
+                  key={item.id}
+                  className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <CardHeader className="p-0">
+                    <div className="relative overflow-hidden h-64">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <Badge className="absolute top-4 left-4 bg-secondary">
+                        {item.category}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <CardTitle className="text-2xl mb-2">{item.name}</CardTitle>
+                    <CardDescription className="text-base mb-4">
+                      {item.description}
+                    </CardDescription>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-primary">{item.price} ₽</span>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-6 pt-0">
+                    <Button
+                      size="lg"
+                      className="w-full group-hover:scale-105 transition-transform"
+                      onClick={() => addToCart(item)}
+                    >
+                      <Icon name="Plus" size={20} className="mr-2" />
+                      В корзину
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="fried-rolls" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {friedRolls.map((item, index) => (
                 <Card
                   key={item.id}
                   className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden"
