@@ -90,7 +90,7 @@ const Index = () => {
               <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                 <Icon name="Pizza" size={24} className="text-primary-foreground" />
               </div>
-              <h1 className="text-2xl font-bold">PizzaExpress</h1>
+              <h1 className="text-2xl font-bold">Катана</h1>
             </div>
             <div className="hidden md:flex gap-6">
               <Button variant="ghost" onClick={() => setActiveSection('home')}>
