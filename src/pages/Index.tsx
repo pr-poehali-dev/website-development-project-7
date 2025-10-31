@@ -14,7 +14,7 @@ interface MenuItem {
   price: number;
   image: string;
   category: string;
-  type: 'pizza' | 'roll' | 'baked-roll' | 'fried-roll';
+  type: 'pizza' | 'roll' | 'baked-roll' | 'fried-roll' | 'signature-roll';
 }
 
 interface CartItem extends MenuItem {
@@ -188,6 +188,42 @@ const menuItems: MenuItem[] = [
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/164da862-4895-49dc-b6be-fe2d36a8abd5.jpg',
     category: 'Жареные',
     type: 'fried-roll'
+  },
+  {
+    id: 19,
+    name: 'Императорский',
+    description: 'Лобстер, черная икра, фуа-гра, трюфельный соус',
+    price: 1290,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/d0658495-fc0c-4111-8f1e-fa65472194d4.jpg',
+    category: 'Фирменные',
+    type: 'signature-roll'
+  },
+  {
+    id: 20,
+    name: 'Золотой дракон',
+    description: 'Тигровая креветка, золотая фольга, икра масаго, унаги',
+    price: 980,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/d0658495-fc0c-4111-8f1e-fa65472194d4.jpg',
+    category: 'Фирменные',
+    type: 'signature-roll'
+  },
+  {
+    id: 21,
+    name: 'Радуга шефа',
+    description: 'Лосось, тунец, желтохвост, авокадо, три вида икры',
+    price: 850,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/d0658495-fc0c-4111-8f1e-fa65472194d4.jpg',
+    category: 'Фирменные',
+    type: 'signature-roll'
+  },
+  {
+    id: 22,
+    name: 'Огненный вулкан',
+    description: 'Острый тунец, халапеньо, спайси соус, запеченный сыр',
+    price: 720,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/5f96d78a-58a5-4663-82d9-f68e29bf9423.jpg',
+    category: 'Фирменные',
+    type: 'signature-roll'
   }
 ];
 
@@ -207,6 +243,7 @@ const Index = () => {
   const rolls = useMemo(() => menuItems.filter(item => item.type === 'roll'), []);
   const bakedRolls = useMemo(() => menuItems.filter(item => item.type === 'baked-roll'), []);
   const friedRolls = useMemo(() => menuItems.filter(item => item.type === 'fried-roll'), []);
+  const signatureRolls = useMemo(() => menuItems.filter(item => item.type === 'signature-roll'), []);
 
   const addToCart = (item: MenuItem) => {
     setCart(prevCart => {
@@ -417,7 +454,7 @@ const Index = () => {
             </div>
 
             <Tabs defaultValue="pizza" className="w-full">
-          <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-8">
+          <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-5 mb-8">
             <TabsTrigger value="pizza" className="text-lg">
               <span className="mr-2">🍕</span>
               Пицца
@@ -433,6 +470,10 @@ const Index = () => {
             <TabsTrigger value="fried-rolls" className="text-lg">
               <span className="mr-2">🍤</span>
               Жареные
+            </TabsTrigger>
+            <TabsTrigger value="signature-rolls" className="text-lg">
+              <span className="mr-2">⭐</span>
+              Фирменные
             </TabsTrigger>
           </TabsList>
 
@@ -557,6 +598,50 @@ const Index = () => {
                     <Button
                       size="lg"
                       className="w-full group-hover:scale-105 transition-transform"
+                      onClick={() => addToCart(item)}
+                    >
+                      <Icon name="Plus" size={20} className="mr-2" />
+                      В корзину
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="signature-rolls" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {signatureRolls.map((item, index) => (
+                <Card
+                  key={item.id}
+                  className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden border-2 border-primary/50"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <CardHeader className="p-0">
+                    <div className="relative overflow-hidden h-64">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <Badge className="absolute top-4 left-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-0">
+                        ⭐ {item.category}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <CardTitle className="text-2xl mb-2">{item.name}</CardTitle>
+                    <CardDescription className="text-base mb-4">
+                      {item.description}
+                    </CardDescription>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-primary">{item.price} ₽</span>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-6 pt-0">
+                    <Button
+                      size="lg"
+                      className="w-full group-hover:scale-105 transition-transform bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
                       onClick={() => addToCart(item)}
                     >
                       <Icon name="Plus" size={20} className="mr-2" />
