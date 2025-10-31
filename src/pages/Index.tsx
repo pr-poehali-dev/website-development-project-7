@@ -21,6 +21,7 @@ const Index = () => {
   const friedRolls = useMemo(() => menuItems.filter(item => item.type === 'fried-roll'), []);
   const signatureRolls = useMemo(() => menuItems.filter(item => item.type === 'signature-roll'), []);
   const sandwiches = useMemo(() => menuItems.filter(item => item.type === 'sandwich'), []);
+  const woks = useMemo(() => menuItems.filter(item => item.type === 'wok'), []);
 
   const addToCart = (item: MenuItem) => {
     setCart(prevCart => {
@@ -156,6 +157,7 @@ const Index = () => {
                 friedRolls={friedRolls}
                 signatureRolls={signatureRolls}
                 sandwiches={sandwiches}
+                woks={woks}
                 onAddToCart={addToCart}
               />
             </div>

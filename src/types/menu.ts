@@ -5,7 +5,7 @@ export interface MenuItem {
   price: number;
   image: string;
   category: string;
-  type: 'pizza' | 'roll' | 'baked-roll' | 'fried-roll' | 'signature-roll' | 'sandwich';
+  type: 'pizza' | 'roll' | 'baked-roll' | 'fried-roll' | 'signature-roll' | 'sandwich' | 'wok';
 }
 
 export interface CartItem extends MenuItem {

@@ -234,6 +234,42 @@ export const menuItems: MenuItem[] = [
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/bad152ec-698e-42d5-9397-d8a6dc74dfe3.jpg',
     category: 'Сэндвичи',
     type: 'sandwich'
+  },
+  {
+    id: 27,
+    name: 'WOK с курицей',
+    description: 'Лапша удон, курица, овощи, соус терияки',
+    price: 480,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/164da862-4895-49dc-b6be-fe2d36a8abd5.jpg',
+    category: 'WOK',
+    type: 'wok'
+  },
+  {
+    id: 28,
+    name: 'WOK с креветками',
+    description: 'Рисовая лапша, тигровые креветки, овощи, устричный соус',
+    price: 590,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/d0658495-fc0c-4111-8f1e-fa65472194d4.jpg',
+    category: 'WOK',
+    type: 'wok'
+  },
+  {
+    id: 29,
+    name: 'WOK с говядиной',
+    description: 'Яичная лапша, говядина, болгарский перец, соевый соус',
+    price: 520,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/dac16167-018b-4005-bfaf-d47a40765dfc.jpg',
+    category: 'WOK',
+    type: 'wok'
+  },
+  {
+    id: 30,
+    name: 'WOK овощной',
+    description: 'Гречневая лапша соба, микс овощей, кунжут, соус',
+    price: 420,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/bad152ec-698e-42d5-9397-d8a6dc74dfe3.jpg',
+    category: 'WOK',
+    type: 'wok'
   }
 ];
 

@@ -9,6 +9,7 @@ interface MenuTabsProps {
   friedRolls: MenuItem[];
   signatureRolls: MenuItem[];
   sandwiches: MenuItem[];
+  woks: MenuItem[];
   onAddToCart: (item: MenuItem) => void;
 }
 
@@ -19,11 +20,12 @@ export const MenuTabs = ({
   friedRolls,
   signatureRolls,
   sandwiches,
+  woks,
   onAddToCart
 }: MenuTabsProps) => {
   return (
     <Tabs defaultValue="pizza" className="w-full">
-      <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-6 mb-8">
+      <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-7 mb-8">
         <TabsTrigger value="pizza" className="text-lg">
           <span className="mr-2">🍕</span>
           Пицца
@@ -47,6 +49,10 @@ export const MenuTabs = ({
         <TabsTrigger value="sandwiches" className="text-lg">
           <span className="mr-2">🥪</span>
           Сэндвичи
+        </TabsTrigger>
+        <TabsTrigger value="wok" className="text-lg">
+          <span className="mr-2">🍜</span>
+          WOK
         </TabsTrigger>
       </TabsList>
 
@@ -93,6 +99,14 @@ export const MenuTabs = ({
       <TabsContent value="fried-rolls" className="mt-0">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {friedRolls.map((item, index) => (
+            <MenuCard key={item.id} item={item} index={index} onAddToCart={onAddToCart} />
+          ))}
+        </div>
+      </TabsContent>
+
+      <TabsContent value="wok" className="mt-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {woks.map((item, index) => (
             <MenuCard key={item.id} item={item} index={index} onAddToCart={onAddToCart} />
           ))}
         </div>
