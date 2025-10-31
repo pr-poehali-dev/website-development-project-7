@@ -14,7 +14,7 @@ interface MenuItem {
   price: number;
   image: string;
   category: string;
-  type: 'pizza' | 'roll' | 'baked-roll' | 'fried-roll' | 'signature-roll';
+  type: 'pizza' | 'roll' | 'baked-roll' | 'fried-roll' | 'signature-roll' | 'sandwich';
 }
 
 interface CartItem extends MenuItem {
@@ -224,6 +224,42 @@ const menuItems: MenuItem[] = [
     image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/5f96d78a-58a5-4663-82d9-f68e29bf9423.jpg',
     category: 'Фирменные',
     type: 'signature-roll'
+  },
+  {
+    id: 23,
+    name: 'Клаб-сэндвич',
+    description: 'Курица гриль, бекон, помидоры, салат, майонез',
+    price: 390,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/dac16167-018b-4005-bfaf-d47a40765dfc.jpg',
+    category: 'Сэндвичи',
+    type: 'sandwich'
+  },
+  {
+    id: 24,
+    name: 'Цезарь',
+    description: 'Курица, пармезан, салат романо, соус цезарь',
+    price: 350,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/dac16167-018b-4005-bfaf-d47a40765dfc.jpg',
+    category: 'Сэндвичи',
+    type: 'sandwich'
+  },
+  {
+    id: 25,
+    name: 'Барбекю',
+    description: 'Свинина BBQ, маринованный лук, соленые огурцы',
+    price: 410,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/dac16167-018b-4005-bfaf-d47a40765dfc.jpg',
+    category: 'Сэндвичи',
+    type: 'sandwich'
+  },
+  {
+    id: 26,
+    name: 'Вегетарианский',
+    description: 'Авокадо, помидоры, моцарелла, песто, руккола',
+    price: 320,
+    image: 'https://cdn.poehali.dev/projects/075a05a8-0fe7-47a0-b7e3-ca94695300d4/files/bad152ec-698e-42d5-9397-d8a6dc74dfe3.jpg',
+    category: 'Сэндвичи',
+    type: 'sandwich'
   }
 ];
 
@@ -244,6 +280,7 @@ const Index = () => {
   const bakedRolls = useMemo(() => menuItems.filter(item => item.type === 'baked-roll'), []);
   const friedRolls = useMemo(() => menuItems.filter(item => item.type === 'fried-roll'), []);
   const signatureRolls = useMemo(() => menuItems.filter(item => item.type === 'signature-roll'), []);
+  const sandwiches = useMemo(() => menuItems.filter(item => item.type === 'sandwich'), []);
 
   const addToCart = (item: MenuItem) => {
     setCart(prevCart => {
@@ -454,7 +491,7 @@ const Index = () => {
             </div>
 
             <Tabs defaultValue="pizza" className="w-full">
-          <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-5 mb-8">
+          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-6 mb-8">
             <TabsTrigger value="pizza" className="text-lg">
               <span className="mr-2">🍕</span>
               Пицца
@@ -474,6 +511,10 @@ const Index = () => {
             <TabsTrigger value="signature-rolls" className="text-lg">
               <span className="mr-2">⭐</span>
               Фирменные
+            </TabsTrigger>
+            <TabsTrigger value="sandwiches" className="text-lg">
+              <span className="mr-2">🥪</span>
+              Сэндвичи
             </TabsTrigger>
           </TabsList>
 
@@ -642,6 +683,50 @@ const Index = () => {
                     <Button
                       size="lg"
                       className="w-full group-hover:scale-105 transition-transform bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                      onClick={() => addToCart(item)}
+                    >
+                      <Icon name="Plus" size={20} className="mr-2" />
+                      В корзину
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="sandwiches" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {sandwiches.map((item, index) => (
+                <Card
+                  key={item.id}
+                  className="group hover:shadow-2xl transition-all duration-300 animate-fade-in overflow-hidden"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <CardHeader className="p-0">
+                    <div className="relative overflow-hidden h-64">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <Badge className="absolute top-4 left-4 bg-secondary">
+                        {item.category}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <CardTitle className="text-2xl mb-2">{item.name}</CardTitle>
+                    <CardDescription className="text-base mb-4">
+                      {item.description}
+                    </CardDescription>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-primary">{item.price} ₽</span>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-6 pt-0">
+                    <Button
+                      size="lg"
+                      className="w-full group-hover:scale-105 transition-transform"
                       onClick={() => addToCart(item)}
                     >
                       <Icon name="Plus" size={20} className="mr-2" />
